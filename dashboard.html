@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin — SujetsNiger</title>
-  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="main.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -24,13 +24,13 @@
 
 <nav class="navbar" id="navbar" style="background:rgba(15,64,37,0.97);border-bottom-color:rgba(255,255,255,.1)">
   <div class="nav-inner">
-    <a href="../index.html" class="logo" style="color:#fff">
+    <a href="index.html" class="logo" style="color:#fff">
       <span class="logo-icon">📚</span>
       <span class="logo-text" style="color:#fff">Sujets<strong style="color:#6ee7b7">Niger</strong></span>
     </a>
     <div style="display:flex;align-items:center;gap:16px">
       <span class="admin-badge">⚙️ ADMIN</span>
-      <a href="../index.html" style="color:rgba(255,255,255,.7);font-size:.875rem;text-decoration:none">← Site public</a>
+      <a href="index.html" style="color:rgba(255,255,255,.7);font-size:.875rem;text-decoration:none">← Site public</a>
       <button onclick="Auth.logout()" style="background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);padding:8px 18px;border-radius:50px;cursor:pointer;font-family:inherit;font-size:.875rem">Déconnexion</button>
     </div>
   </div>
@@ -48,7 +48,7 @@
       <a href="#" onclick="showSection('users')" id="nav-users"><span class="nav-icon">👥</span> Utilisateurs</a>
       <a href="#" onclick="showSection('stats')" id="nav-stats"><span class="nav-icon">📈</span> Statistiques</a>
       <hr style="border:none;border-top:1px solid var(--border);margin:12px 0">
-      <a href="../pages/sujets.html"><span class="nav-icon">🌐</span> Voir le site</a>
+      <a href="sujets.html"><span class="nav-icon">🌐</span> Voir le site</a>
     </nav>
   </aside>
 
@@ -218,9 +218,9 @@
   </div>
 </div>
 
-<script src="../js/db.js"></script>
-<script src="../js/auth.js"></script>
-<script src="../js/main.js"></script>
+<script src="db.js"></script>
+<script src="auth.js"></script>
+<script src="main.js"></script>
 <script>
 // Admin guard
 if (!Auth.requireAdmin()) throw new Error('Not admin');
