@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion — SujetsNiger</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="../index.html" class="logo">
+      <span class="logo-icon">📚</span>
+      <span class="logo-text">Sujets<strong>Niger</strong></span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="../index.html">Accueil</a>
+      <a href="sujets.html">Sujets</a>
+      <a href="register.html" class="btn-primary">S'inscrire</a>
+    </div>
+    <button class="burger" id="burger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-header">
+      <div style="font-size:3rem;margin-bottom:12px">🔐</div>
+      <h1>Connexion</h1>
+      <p>Accédez à votre espace et téléchargez vos sujets</p>
+    </div>
+
+    <div class="alert alert-error" id="alertError">
+      <span>❌</span> <span id="errorMsg"></span>
+    </div>
+    <div class="alert alert-success" id="alertSuccess">
+      <span>✅</span> Connexion réussie ! Redirection en cours...
+    </div>
+
+    <div class="form-group">
+      <label>Adresse email</label>
+      <div class="input-icon">
+        <span class="icon">📧</span>
+        <input type="email" id="email" placeholder="votre@email.com" autocomplete="email">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Mot de passe</label>
+      <div class="input-icon">
+        <span class="icon">🔑</span>
+        <input type="password" id="password" placeholder="••••••••" autocomplete="current-password">
+      </div>
+    </div>
+
+    <div style="margin-bottom:16px;font-size:.85rem">
+      <strong style="color:var(--text2)">Compte démo :</strong>
+      Admin → <code>admin@sujetsniger.ne</code> / <code>admin123</code>
+    </div>
+
+    <button class="btn-submit" id="loginBtn" onclick="handleLogin()">Se connecter</button>
+
+    <div class="auth-footer">
+      Pas encore de compte ? <a href="register.html">S'inscrire gratuitement</a>
+    </div>
+  </div>
+</div>
+
+<script src="../js/db.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/main.js"></script>
+<script>
+// Redirect if already logged in
+if (Auth.isLoggedIn()) {
+  const user = Auth.currentUser();
+  window.location.href = user.role === 'admin' ? '../admin/dashboard.html' : 'dashboard.html';
+}
+
+function handleLogin() {
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const btn = document.getElementById('loginBtn');
+  const errAlert = document.getElementById('alertError');
+  const errMsg = document.getElementById('errorMsg');
+  const succAlert = document.getElementById('alertSuccess');
+
+  errAlert.classList.remove('show');
+  succAlert.classList.remove('show');
+
+  if (!email || !password) {
+    errMsg.textContent = 'Veuillez remplir tous les champs.';
+    errAlert.classList.add('show');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loader"></span> Connexion...';
+
+  setTimeout(() => {
+    const result = Auth.login(email, password);
+    if (result.ok) {
+      succAlert.classList.add('show');
+      const params = new URLSearchParams(window.location.search);
+      const redirect = params.get('redirect');
+      setTimeout(() => {
+        if (redirect) {
+          window.location.href = redirect;
+        } else if (result.user.role === 'admin') {
+          window.location.href = '../admin/dashboard.html';
+        } else {
+          window.location.href = 'dashboard.html';
+        }
+      }, 1000);
+    } else {
+      errMsg.textContent = result.msg;
+      errAlert.classList.add('show');
+      btn.disabled = false;
+      btn.textContent = 'Se connecter';
+    }
+  }, 600);
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
+</script>
+</body>
+</html>

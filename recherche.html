@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recherche — SujetsNiger</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    .search-page { padding-top: 68px; }
+    .search-hero {
+      background: var(--bg2); border-bottom: 1.5px solid var(--border);
+      padding: 60px 24px 40px; text-align: center;
+    }
+    .search-hero h1 { font-family: var(--font-display); font-size: 2.4rem; margin-bottom: 8px; }
+    .search-hero p { color: var(--text2); margin-bottom: 32px; }
+    .search-hero .search-bar { max-width: 600px; margin: 0 auto; }
+
+    .search-body { max-width: 1200px; margin: 0 auto; padding: 32px 24px 60px; }
+
+    .quick-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 32px; }
+    .chip {
+      padding: 7px 18px; border-radius: 50px;
+      border: 1.5px solid var(--border); background: var(--bg2);
+      cursor: pointer; font-size: .875rem; font-weight: 600;
+      transition: all .2s; color: var(--text2);
+    }
+    .chip:hover, .chip.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+    .adv-filters {
+      background: var(--bg2); border: 1.5px solid var(--border);
+      border-radius: var(--radius); padding: 24px; margin-bottom: 32px;
+    }
+    .adv-filters h3 { font-weight: 700; margin-bottom: 18px; }
+    .filters-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .adv-filters select {
+      width: 100%; padding: 10px 14px; border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm); font-family: var(--font-body);
+      background: var(--bg); cursor: pointer; outline: none; font-size: .875rem;
+    }
+    .adv-filters select:focus { border-color: var(--primary); }
+
+    .results-section h2 { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 20px; }
+    .results-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+
+    .trending { margin-bottom: 48px; }
+    .trending h2 { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 20px; }
+    .trending-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .trending-card {
+      background: var(--bg2); border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm); padding: 18px; cursor: pointer;
+      transition: all .2s; text-align: center;
+    }
+    .trending-card:hover { border-color: var(--primary); box-shadow: var(--shadow); }
+    .trending-card .t-icon { font-size: 2rem; margin-bottom: 8px; }
+    .trending-card .t-name { font-weight: 700; font-size: .875rem; color: var(--text); }
+    .trending-card .t-count { font-size: .75rem; color: var(--text3); margin-top: 4px; }
+
+    @media(max-width:900px){.results-grid{grid-template-columns:repeat(2,1fr)}.trending-grid{grid-template-columns:repeat(2,1fr)}.filters-row{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:600px){.results-grid{grid-template-columns:1fr}.trending-grid{grid-template-columns:1fr}.filters-row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="../index.html" class="logo">
+      <span class="logo-icon">📚</span>
+      <span class="logo-text">Sujets<strong>Niger</strong></span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="../index.html">Accueil</a>
+      <a href="sujets.html">Sujets</a>
+      <a href="recherche.html" class="active">Recherche</a>
+      <a href="login.html" class="btn-outline">Connexion</a>
+      <a href="register.html" class="btn-primary">S'inscrire</a>
+    </div>
+    <button class="burger" id="burger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="search-page">
+  <div class="search-hero">
+    <h1>🔍 Moteur de Recherche</h1>
+    <p>Trouvez rapidement le sujet ou la correction dont vous avez besoin</p>
+    <div class="search-bar">
+      <input type="text" id="mainSearch" placeholder="Ex: BAC Mathématiques 2023, Concours ENA...">
+      <button onclick="doSearch()">Rechercher</button>
+    </div>
+  </div>
+
+  <div class="search-body">
+    <!-- QUICK CHIPS -->
+    <div class="quick-chips" id="quickChips">
+      <span style="font-weight:700;color:var(--text2);align-self:center;font-size:.85rem">Recherches rapides :</span>
+      <span class="chip" onclick="quickSearch('BAC Mathématiques')">BAC Maths</span>
+      <span class="chip" onclick="quickSearch('BEPC')">BEPC</span>
+      <span class="chip" onclick="quickSearch('Concours ENA')">ENA</span>
+      <span class="chip" onclick="quickSearch('Douanes')">Douanes</span>
+      <span class="chip" onclick="quickSearch('Français')">Français</span>
+      <span class="chip" onclick="quickSearch('Physique')">Physique</span>
+      <span class="chip" onclick="quickSearch('concours')">Tous concours</span>
+      <span class="chip" onclick="quickSearch('2023')">Année 2023</span>
+    </div>
+
+    <!-- ADVANCED FILTERS -->
+    <div class="adv-filters">
+      <h3>🎯 Filtres avancés</h3>
+      <div class="filters-row">
+        <div>
+          <label style="font-size:.8rem;font-weight:700;color:var(--text2);display:block;margin-bottom:8px">TYPE</label>
+          <select id="fType">
+            <option value="">Tous</option>
+            <option value="examen">Examen</option>
+            <option value="concours">Concours</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:.8rem;font-weight:700;color:var(--text2);display:block;margin-bottom:8px">NIVEAU</label>
+          <select id="fNiveau">
+            <option value="">Tous</option>
+            <option>BEPC</option><option>BAC</option><option>BEP</option>
+            <option>CAP</option><option>Université</option>
+            <option>Fonction Publique</option><option>Grandes Écoles</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:.8rem;font-weight:700;color:var(--text2);display:block;margin-bottom:8px">MATIÈRE</label>
+          <select id="fMatiere"><option value="">Toutes</option></select>
+        </div>
+        <div>
+          <label style="font-size:.8rem;font-weight:700;color:var(--text2);display:block;margin-bottom:8px">ANNÉE</label>
+          <select id="fAnnee"><option value="">Toutes</option></select>
+        </div>
+      </div>
+      <div style="margin-top:16px;display:flex;gap:12px">
+        <button class="btn-hero-primary" style="padding:10px 24px;font-size:.9rem" onclick="doSearch()">🔍 Rechercher</button>
+        <button onclick="resetSearch()" style="padding:10px 20px;border:1.5px solid var(--border);border-radius:50px;background:none;cursor:pointer;font-family:inherit;font-size:.9rem">Réinitialiser</button>
+      </div>
+    </div>
+
+    <!-- TRENDING -->
+    <div class="trending" id="trendingSection">
+      <h2>🔥 Sujets les plus téléchargés</h2>
+      <div class="trending-grid" id="trendingGrid"></div>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="results-section" id="resultsSection" style="display:none">
+      <h2 id="resultsTitle"></h2>
+      <div class="results-grid" id="resultsGrid"></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom"><p>© 2024 SujetsNiger · Fait avec ❤️ pour les étudiants nigériens</p></div>
+  </div>
+</footer>
+
+<script src="../js/db.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/main.js"></script>
+<script>
+// Populate dropdowns
+const sujets = DB.getSujets();
+const matieres = [...new Set(sujets.map(s=>s.matiere))].sort();
+const annees = [...new Set(sujets.map(s=>s.annee))].sort((a,b)=>b-a);
+
+const fMat = document.getElementById('fMatiere');
+matieres.forEach(m => { const o = document.createElement('option'); o.value=m; o.textContent=m; fMat.appendChild(o); });
+
+const fAnn = document.getElementById('fAnnee');
+annees.forEach(a => { const o = document.createElement('option'); o.value=a; o.textContent=a; fAnn.appendChild(o); });
+
+// Trending
+const trending = DB.getSujets().sort((a,b)=>(b.downloads||0)-(a.downloads||0)).slice(0,8);
+document.getElementById('trendingGrid').innerHTML = trending.map(s => `
+  <div class="trending-card" onclick="quickSearch('${s.matiere}')">
+    <div class="t-icon">${s.type==='concours'?'🏆':'📄'}</div>
+    <div class="t-name">${s.matiere}</div>
+    <div class="t-count">⬇ ${(s.downloads||0).toLocaleString('fr-FR')} téléchargements</div>
+  </div>
+`).join('');
+
+function doSearch() {
+  const q = document.getElementById('mainSearch').value;
+  const type = document.getElementById('fType').value;
+  const niveau = document.getElementById('fNiveau').value;
+  const matiere = document.getElementById('fMatiere').value;
+  const annee = document.getElementById('fAnnee').value;
+
+  const results = DB.searchSujets({ q, type, niveau, matiere, annee });
+
+  document.getElementById('trendingSection').style.display = 'none';
+  document.getElementById('resultsSection').style.display = 'block';
+
+  const title = q ? `Résultats pour "${q}"` : 'Tous les sujets';
+  document.getElementById('resultsTitle').textContent = `${title} (${results.length} résultat${results.length>1?'s':''})`;
+
+  const grid = document.getElementById('resultsGrid');
+  if (results.length === 0) {
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text2)"><div style="font-size:3rem;margin-bottom:12px">🔍</div><h3>Aucun résultat</h3><p>Essayez avec d'autres termes</p></div>`;
+  } else {
+    grid.innerHTML = results.map(s => renderSujetCard(s)).join('');
+  }
+}
+
+function quickSearch(term) {
+  document.getElementById('mainSearch').value = term;
+  // Remove active from all chips
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  event.target.classList.add('active');
+  doSearch();
+}
+
+function resetSearch() {
+  document.getElementById('mainSearch').value = '';
+  document.getElementById('fType').value = '';
+  document.getElementById('fNiveau').value = '';
+  document.getElementById('fMatiere').value = '';
+  document.getElementById('fAnnee').value = '';
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  document.getElementById('trendingSection').style.display = 'block';
+  document.getElementById('resultsSection').style.display = 'none';
+}
+
+document.getElementById('mainSearch').addEventListener('keydown', e => { if(e.key==='Enter') doSearch(); });
+
+// Auto-search if URL has param
+const params = new URLSearchParams(window.location.search);
+if (params.get('q')) {
+  document.getElementById('mainSearch').value = params.get('q');
+  doSearch();
+}
+</script>
+</body>
+</html>

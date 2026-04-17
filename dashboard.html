@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — SujetsNiger</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    .admin-badge { background: #fef3c7; color: #92400e; font-size:.75rem; font-weight:700; padding:3px 10px; border-radius:50px; }
+    .section-tabs { display:flex; gap:8px; margin-bottom:28px; flex-wrap:wrap; }
+    .tab-btn {
+      padding:9px 20px; border-radius:50px; border:1.5px solid var(--border);
+      background:var(--bg2); cursor:pointer; font-family:inherit;
+      font-size:.875rem; font-weight:600; transition:all .2s; color:var(--text2);
+    }
+    .tab-btn.active { background:var(--primary); color:#fff; border-color:var(--primary); }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    @media(max-width:600px){.form-row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar" style="background:rgba(15,64,37,0.97);border-bottom-color:rgba(255,255,255,.1)">
+  <div class="nav-inner">
+    <a href="../index.html" class="logo" style="color:#fff">
+      <span class="logo-icon">📚</span>
+      <span class="logo-text" style="color:#fff">Sujets<strong style="color:#6ee7b7">Niger</strong></span>
+    </a>
+    <div style="display:flex;align-items:center;gap:16px">
+      <span class="admin-badge">⚙️ ADMIN</span>
+      <a href="../index.html" style="color:rgba(255,255,255,.7);font-size:.875rem;text-decoration:none">← Site public</a>
+      <button onclick="Auth.logout()" style="background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);padding:8px 18px;border-radius:50px;cursor:pointer;font-family:inherit;font-size:.875rem">Déconnexion</button>
+    </div>
+  </div>
+</nav>
+
+<div class="dashboard-page">
+  <aside class="sidebar">
+    <div class="sidebar-user" id="sidebarUser" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.1)">
+      <strong id="adminName" style="color:#fff">Admin</strong>
+      <span style="opacity:.7">Administrateur</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#" class="active" onclick="showSection('overview')" id="nav-overview"><span class="nav-icon">📊</span> Vue d'ensemble</a>
+      <a href="#" onclick="showSection('sujets')" id="nav-sujets"><span class="nav-icon">📚</span> Gestion Sujets</a>
+      <a href="#" onclick="showSection('users')" id="nav-users"><span class="nav-icon">👥</span> Utilisateurs</a>
+      <a href="#" onclick="showSection('stats')" id="nav-stats"><span class="nav-icon">📈</span> Statistiques</a>
+      <hr style="border:none;border-top:1px solid var(--border);margin:12px 0">
+      <a href="../pages/sujets.html"><span class="nav-icon">🌐</span> Voir le site</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <!-- OVERVIEW -->
+    <div id="sec-overview">
+      <h1 class="page-title">📊 Tableau de Bord Admin</h1>
+      <div class="stats-row" id="statsRow"></div>
+      <h2 style="font-family:var(--font-display);font-size:1.3rem;margin-bottom:16px">⚡ Actions rapides</h2>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:32px">
+        <button class="btn-hero-primary" style="padding:12px 24px;font-size:.9rem" onclick="openModal()">➕ Ajouter un sujet</button>
+        <button onclick="showSection('users')" class="btn-hero-ghost" style="padding:12px 24px;font-size:.9rem">👥 Gérer utilisateurs</button>
+      </div>
+      <h2 style="font-family:var(--font-display);font-size:1.3rem;margin-bottom:16px">📋 Sujets récents</h2>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Titre</th><th>Type</th><th>Niveau</th><th>Année</th><th>⬇</th><th>Actions</th></tr></thead>
+          <tbody id="overviewTbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SUJETS MANAGEMENT -->
+    <div id="sec-sujets" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:24px">
+        <h1 class="page-title" style="margin:0">📚 Gestion des Sujets</h1>
+        <button class="btn-hero-primary" style="padding:11px 24px;font-size:.9rem" onclick="openModal()">➕ Ajouter un sujet</button>
+      </div>
+
+      <!-- Filters -->
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px">
+        <input type="text" id="adminSearch" placeholder="🔍 Rechercher..." oninput="renderSujetsTable()" style="padding:9px 16px;border:1.5px solid var(--border);border-radius:50px;font-family:inherit;width:220px;outline:none">
+        <select id="adminFType" onchange="renderSujetsTable()" style="padding:9px 14px;border:1.5px solid var(--border);border-radius:50px;font-family:inherit;background:var(--bg2)">
+          <option value="">Tous types</option><option value="examen">Examen</option><option value="concours">Concours</option>
+        </select>
+        <select id="adminFNiveau" onchange="renderSujetsTable()" style="padding:9px 14px;border:1.5px solid var(--border);border-radius:50px;font-family:inherit;background:var(--bg2)">
+          <option value="">Tous niveaux</option>
+          <option>BEPC</option><option>BAC</option><option>BEP</option><option>CAP</option>
+          <option>Université</option><option>Fonction Publique</option><option>Grandes Écoles</option>
+        </select>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>ID</th><th>Titre</th><th>Type</th><th>Niveau</th><th>Matière</th><th>Année</th><th>Série</th><th>⬇</th><th>Ajouté le</th><th>Actions</th></tr></thead>
+          <tbody id="sujetsAdminTbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- USERS -->
+    <div id="sec-users" style="display:none">
+      <h1 class="page-title">👥 Utilisateurs</h1>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Nom</th><th>Email</th><th>Niveau</th><th>Rôle</th><th>Inscrit le</th><th>Actions</th></tr></thead>
+          <tbody id="usersTbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div id="sec-stats" style="display:none">
+      <h1 class="page-title">📈 Statistiques</h1>
+      <div class="stats-row" id="statsRow2"></div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px">
+        <div class="table-wrap" style="padding:24px">
+          <h3 style="font-weight:700;margin-bottom:16px">🔥 Top 10 — Sujets les plus téléchargés</h3>
+          <div id="topDownloads"></div>
+        </div>
+        <div class="table-wrap" style="padding:24px">
+          <h3 style="font-weight:700;margin-bottom:16px">📚 Sujets par niveau</h3>
+          <div id="byNiveau"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- MODAL: ADD/EDIT SUJET -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modalTitle">➕ Ajouter un sujet</h2>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+
+    <div class="alert alert-error" id="modalError"><span>❌</span> <span id="modalErrorMsg"></span></div>
+    <div class="alert alert-success" id="modalSuccess"><span>✅</span> Sujet enregistré avec succès !</div>
+
+    <input type="hidden" id="editId">
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Type *</label>
+        <select id="fmType">
+          <option value="examen">📄 Examen</option>
+          <option value="concours">🏆 Concours</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Niveau *</label>
+        <select id="fmNiveau">
+          <option>BEPC</option><option>BAC</option><option>BEP</option>
+          <option>CAP</option><option>Université</option>
+          <option>Fonction Publique</option><option>Grandes Écoles</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Matière *</label>
+        <input type="text" id="fmMatiere" placeholder="Ex: Mathématiques">
+      </div>
+      <div class="form-group">
+        <label>Année *</label>
+        <input type="number" id="fmAnnee" placeholder="2023" min="1990" max="2030">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Série / Concours spécifique</label>
+      <input type="text" id="fmSerie" placeholder="Ex: Série D, ENA, Police...">
+    </div>
+
+    <div class="form-group">
+      <label>Titre complet *</label>
+      <input type="text" id="fmTitre" placeholder="Ex: BAC Mathématiques Série D 2023">
+    </div>
+
+    <div class="form-group">
+      <label>Description</label>
+      <textarea id="fmDescription" placeholder="Brève description du sujet..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>🔗 URL du sujet (PDF)</label>
+      <input type="text" id="fmSujetUrl" placeholder="https://... ou # pour placeholder">
+    </div>
+
+    <div class="form-group">
+      <label>🔗 URL de la correction (PDF)</label>
+      <input type="text" id="fmCorrUrl" placeholder="https://... ou # pour placeholder">
+    </div>
+
+    <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:8px">
+      <button onclick="closeModal()" style="padding:11px 24px;border:1.5px solid var(--border);border-radius:50px;background:none;cursor:pointer;font-family:inherit;font-size:.9rem">Annuler</button>
+      <button class="btn-submit" style="width:auto;padding:11px 32px" onclick="saveSujet()">💾 Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div class="modal-overlay" id="confirmOverlay">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-header">
+      <h2>⚠️ Confirmer la suppression</h2>
+      <button class="modal-close" onclick="closeConfirm()">✕</button>
+    </div>
+    <p style="color:var(--text2);margin-bottom:24px">Êtes-vous sûr de vouloir supprimer ce sujet ? Cette action est irréversible.</p>
+    <div style="display:flex;gap:12px;justify-content:flex-end">
+      <button onclick="closeConfirm()" style="padding:11px 24px;border:1.5px solid var(--border);border-radius:50px;background:none;cursor:pointer;font-family:inherit">Annuler</button>
+      <button id="confirmDeleteBtn" class="btn-submit" style="width:auto;padding:11px 28px;background:var(--accent2)">🗑 Supprimer</button>
+    </div>
+  </div>
+</div>
+
+<script src="../js/db.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/main.js"></script>
+<script>
+// Admin guard
+if (!Auth.requireAdmin()) throw new Error('Not admin');
+
+const session = Auth.currentUser();
+document.getElementById('adminName').textContent = `${session.prenom} ${session.nom}`;
+
+// ── Stats ──
+function renderStats(containerId) {
+  const stats = DB.getStats();
+  const sujets = DB.getSujets();
+  const concours = sujets.filter(s=>s.type==='concours').length;
+  document.getElementById(containerId).innerHTML = `
+    <div class="stat-card"><span class="stat-icon">📚</span><div><div class="stat-label">Total Sujets</div><div class="stat-value">${stats.sujets}</div></div></div>
+    <div class="stat-card"><span class="stat-icon">👥</span><div><div class="stat-label">Utilisateurs</div><div class="stat-value">${stats.users}</div></div></div>
+    <div class="stat-card"><span class="stat-icon">⬇</span><div><div class="stat-label">Téléchargements</div><div class="stat-value">${stats.downloads.toLocaleString('fr-FR')}</div></div></div>
+    <div class="stat-card"><span class="stat-icon">🏆</span><div><div class="stat-label">Concours</div><div class="stat-value">${concours}</div></div></div>
+  `;
+}
+renderStats('statsRow');
+
+// ── Overview table ──
+function renderOverview() {
+  const sujets = DB.getSujets().slice(0,10);
+  document.getElementById('overviewTbody').innerHTML = sujets.map(s => `
+    <tr>
+      <td><strong>${s.titre}</strong></td>
+      <td><span class="badge ${s.type==='examen'?'badge-blue':'badge-red'}">${s.type}</span></td>
+      <td>${s.niveau}</td>
+      <td>${s.annee}</td>
+      <td>${(s.downloads||0).toLocaleString('fr-FR')}</td>
+      <td><button class="btn-action btn-edit" onclick="editSujet(${s.id})">✏️ Éditer</button></td>
+    </tr>`).join('');
+}
+renderOverview();
+
+// ── Sujets table ──
+function renderSujetsTable() {
+  const q = document.getElementById('adminSearch')?.value || '';
+  const type = document.getElementById('adminFType')?.value || '';
+  const niveau = document.getElementById('adminFNiveau')?.value || '';
+  const sujets = DB.searchSujets({ q, type, niveau });
+
+  document.getElementById('sujetsAdminTbody').innerHTML = sujets.map(s => `
+    <tr>
+      <td style="font-size:.8rem;color:var(--text3)">#${s.id}</td>
+      <td><strong style="font-size:.875rem">${s.titre}</strong></td>
+      <td><span class="badge ${s.type==='examen'?'badge-blue':'badge-red'}" style="font-size:.7rem">${s.type}</span></td>
+      <td><span class="badge badge-green" style="font-size:.7rem">${s.niveau}</span></td>
+      <td style="font-size:.875rem">${s.matiere}</td>
+      <td>${s.annee}</td>
+      <td style="font-size:.8rem">${s.serie||'—'}</td>
+      <td style="font-size:.875rem">${(s.downloads||0).toLocaleString('fr-FR')}</td>
+      <td style="font-size:.8rem;color:var(--text3)">${s.createdAt||'—'}</td>
+      <td>
+        <button class="btn-action btn-edit" onclick="editSujet(${s.id})">✏️</button>
+        <button class="btn-action btn-delete" onclick="confirmDelete(${s.id})" style="margin-left:6px">🗑️</button>
+      </td>
+    </tr>`).join('');
+
+  if (sujets.length === 0) {
+    document.getElementById('sujetsAdminTbody').innerHTML = '<tr><td colspan="10" style="text-align:center;padding:40px;color:var(--text2)">Aucun sujet trouvé</td></tr>';
+  }
+}
+
+// ── Users table ──
+function renderUsers() {
+  const users = DB.getUsers();
+  document.getElementById('usersTbody').innerHTML = users.map(u => `
+    <tr>
+      <td><strong>${u.prenom||''} ${u.nom||''}</strong></td>
+      <td style="font-size:.875rem">${u.email}</td>
+      <td>${u.niveau||'—'}</td>
+      <td><span class="badge ${u.role==='admin'?'badge-red':'badge-green'}">${u.role}</span></td>
+      <td style="font-size:.8rem;color:var(--text2)">${u.createdAt||'—'}</td>
+      <td>
+        ${u.role !== 'admin' ? `<button class="btn-action btn-delete" onclick="deleteUser('${u.id}')">🗑️ Supprimer</button>` : '<span style="font-size:.8rem;color:var(--text3)">Admin</span>'}
+      </td>
+    </tr>`).join('');
+}
+
+// ── Stats section ──
+function renderStatsSection() {
+  renderStats('statsRow2');
+  const sujets = DB.getSujets();
+  const top = [...sujets].sort((a,b)=>(b.downloads||0)-(a.downloads||0)).slice(0,10);
+  document.getElementById('topDownloads').innerHTML = top.map((s,i)=>`
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-weight:800;color:var(--text3);font-size:.8rem;width:20px">${i+1}</span>
+        <span style="font-size:.85rem;font-weight:600">${s.matiere} ${s.niveau} ${s.annee}</span>
+      </div>
+      <span style="font-weight:800;color:var(--primary)">${(s.downloads||0).toLocaleString('fr-FR')}</span>
+    </div>`).join('');
+
+  const byNiv = {};
+  sujets.forEach(s => { byNiv[s.niveau] = (byNiv[s.niveau]||0)+1; });
+  const sorted = Object.entries(byNiv).sort((a,b)=>b[1]-a[1]);
+  const max = sorted[0]?.[1]||1;
+  document.getElementById('byNiveau').innerHTML = sorted.map(([niv,cnt])=>`
+    <div style="margin-bottom:16px">
+      <div style="display:flex;justify-content:space-between;font-size:.875rem;font-weight:600;margin-bottom:6px">
+        <span>${niv}</span><span>${cnt}</span>
+      </div>
+      <div style="background:var(--border);border-radius:50px;height:8px;overflow:hidden">
+        <div style="background:var(--primary);height:100%;border-radius:50px;width:${(cnt/max*100).toFixed(0)}%;transition:width .6s"></div>
+      </div>
+    </div>`).join('');
+}
+
+// ── Modal ──
+let editingId = null;
+function openModal(id=null) {
+  editingId = id;
+  document.getElementById('editId').value = id||'';
+  document.getElementById('modalTitle').textContent = id ? '✏️ Modifier le sujet' : '➕ Ajouter un sujet';
+  document.getElementById('modalError').classList.remove('show');
+  document.getElementById('modalSuccess').classList.remove('show');
+
+  if (id) {
+    const s = DB.getSujetById(id);
+    if (s) {
+      document.getElementById('fmType').value = s.type;
+      document.getElementById('fmNiveau').value = s.niveau;
+      document.getElementById('fmMatiere').value = s.matiere;
+      document.getElementById('fmAnnee').value = s.annee;
+      document.getElementById('fmSerie').value = s.serie||'';
+      document.getElementById('fmTitre').value = s.titre;
+      document.getElementById('fmDescription').value = s.description||'';
+      document.getElementById('fmSujetUrl').value = s.sujet_url||'#';
+      document.getElementById('fmCorrUrl').value = s.correction_url||'#';
+    }
+  } else {
+    document.getElementById('fmType').value = 'examen';
+    document.getElementById('fmNiveau').value = 'BAC';
+    ['fmMatiere','fmAnnee','fmSerie','fmTitre','fmDescription'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('fmSujetUrl').value='#';
+    document.getElementById('fmCorrUrl').value='#';
+  }
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
+
+function saveSujet() {
+  const type = document.getElementById('fmType').value;
+  const niveau = document.getElementById('fmNiveau').value;
+  const matiere = document.getElementById('fmMatiere').value.trim();
+  const annee = parseInt(document.getElementById('fmAnnee').value);
+  const serie = document.getElementById('fmSerie').value.trim();
+  const titre = document.getElementById('fmTitre').value.trim();
+  const description = document.getElementById('fmDescription').value.trim();
+  const sujet_url = document.getElementById('fmSujetUrl').value.trim()||'#';
+  const correction_url = document.getElementById('fmCorrUrl').value.trim()||'#';
+
+  const errEl = document.getElementById('modalError');
+  const errMsg = document.getElementById('modalErrorMsg');
+  errEl.classList.remove('show');
+
+  if (!matiere || !annee || !titre) {
+    errMsg.textContent = 'Veuillez remplir les champs obligatoires (matière, année, titre).';
+    errEl.classList.add('show'); return;
+  }
+  if (annee < 1990 || annee > 2030) {
+    errMsg.textContent = 'Année invalide.'; errEl.classList.add('show'); return;
+  }
+
+  const data = { type, niveau, matiere, annee, serie, titre, description, sujet_url, correction_url };
+
+  if (editingId) {
+    DB.updateSujet(editingId, data);
+  } else {
+    DB.addSujet(data);
+  }
+
+  document.getElementById('modalSuccess').classList.add('show');
+  renderOverview();
+  if (document.getElementById('sec-sujets').style.display !== 'none') renderSujetsTable();
+  setTimeout(closeModal, 1200);
+}
+
+function editSujet(id) {
+  openModal(id);
+}
+
+let deleteTargetId = null;
+function confirmDelete(id) {
+  deleteTargetId = id;
+  document.getElementById('confirmOverlay').classList.add('open');
+}
+function closeConfirm() { document.getElementById('confirmOverlay').classList.remove('open'); deleteTargetId=null; }
+
+document.getElementById('confirmDeleteBtn').onclick = () => {
+  if (deleteTargetId) {
+    DB.deleteSujet(deleteTargetId);
+    closeConfirm();
+    renderSujetsTable();
+    renderOverview();
+    showToast('Sujet supprimé avec succès', 'success');
+  }
+};
+
+function deleteUser(id) {
+  const users = DB.getUsers().filter(u => u.id !== id);
+  DB.saveUsers(users);
+  renderUsers();
+  showToast('Utilisateur supprimé', 'success');
+}
+
+// ── Section switching ──
+function showSection(name) {
+  ['overview','sujets','users','stats'].forEach(s => {
+    document.getElementById('sec-'+s).style.display = s===name?'block':'none';
+    const nav = document.getElementById('nav-'+s);
+    if (nav) nav.classList.toggle('active', s===name);
+  });
+  if (name==='sujets') renderSujetsTable();
+  if (name==='users') renderUsers();
+  if (name==='stats') renderStatsSection();
+}
+
+// Close modal on overlay click
+document.getElementById('modalOverlay').addEventListener('click', function(e) { if(e.target===this) closeModal(); });
+document.getElementById('confirmOverlay').addEventListener('click', function(e) { if(e.target===this) closeConfirm(); });
+</script>
+</body>
+</html>

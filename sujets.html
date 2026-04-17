@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sujets — SujetsNiger</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    .page-hero {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      color: #fff; padding: 120px 24px 60px;
+      text-align: center;
+    }
+    .page-hero h1 { font-family: var(--font-display); font-size: 2.8rem; margin-bottom: 12px; }
+    .page-hero p { opacity: .8; font-size: 1.05rem; }
+
+    .filters-bar {
+      background: var(--bg2); border-bottom: 1.5px solid var(--border);
+      padding: 20px 0; position: sticky; top: 68px; z-index: 100;
+    }
+    .filters-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 24px;
+      display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+    }
+    .filter-select {
+      padding: 9px 16px; border: 1.5px solid var(--border);
+      border-radius: 50px; font-family: var(--font-body);
+      font-size: .875rem; background: var(--bg2); cursor: pointer;
+      outline: none; color: var(--text); transition: border-color .2s;
+    }
+    .filter-select:focus { border-color: var(--primary); }
+
+    .results-info {
+      max-width: 1200px; margin: 24px auto 8px; padding: 0 24px;
+      font-size: .875rem; color: var(--text2); font-weight: 600;
+    }
+    .sujets-grid {
+      max-width: 1200px; margin: 0 auto; padding: 16px 24px 60px;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    }
+    .empty-state {
+      text-align: center; padding: 80px 24px;
+      color: var(--text2); grid-column: 1/-1;
+    }
+    .empty-state .big-emoji { font-size: 4rem; margin-bottom: 16px; }
+    .empty-state h3 { font-size: 1.3rem; margin-bottom: 8px; }
+
+    @media(max-width: 900px) { .sujets-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media(max-width: 600px) { .sujets-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="../index.html" class="logo">
+      <span class="logo-icon">📚</span>
+      <span class="logo-text">Sujets<strong>Niger</strong></span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="../index.html">Accueil</a>
+      <a href="sujets.html" class="active">Sujets</a>
+      <a href="recherche.html">Recherche</a>
+      <a href="login.html" class="btn-outline">Connexion</a>
+      <a href="register.html" class="btn-primary">S'inscrire</a>
+    </div>
+    <button class="burger" id="burger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <h1>📚 Bibliothèque de Sujets</h1>
+  <p>Examens et concours officiels du Niger avec leurs corrections</p>
+</div>
+
+<!-- FILTERS -->
+<div class="filters-bar">
+  <div class="filters-inner">
+    <div class="search-bar" style="flex:1;min-width:240px;max-width:380px">
+      <input type="text" id="searchInput" placeholder="Rechercher un sujet...">
+      <button onclick="applyFilters()">🔍 Chercher</button>
+    </div>
+
+    <select class="filter-select" id="filterType" onchange="applyFilters()">
+      <option value="">Tous les types</option>
+      <option value="examen">📄 Examens</option>
+      <option value="concours">🏆 Concours</option>
+    </select>
+
+    <select class="filter-select" id="filterNiveau" onchange="applyFilters()">
+      <option value="">Tous les niveaux</option>
+      <option value="BEPC">BEPC</option>
+      <option value="BAC">BAC</option>
+      <option value="BEP">BEP</option>
+      <option value="CAP">CAP</option>
+      <option value="Université">Université</option>
+      <option value="Fonction Publique">Fonction Publique</option>
+      <option value="Grandes Écoles">Grandes Écoles</option>
+    </select>
+
+    <select class="filter-select" id="filterMatiere" onchange="applyFilters()">
+      <option value="">Toutes les matières</option>
+    </select>
+
+    <select class="filter-select" id="filterAnnee" onchange="applyFilters()">
+      <option value="">Toutes les années</option>
+    </select>
+
+    <button onclick="resetFilters()" style="padding:9px 18px;border:1.5px solid var(--border);border-radius:50px;background:none;cursor:pointer;font-family:inherit;font-size:.875rem;color:var(--text2);transition:all .2s" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">✖ Réinitialiser</button>
+  </div>
+</div>
+
+<div class="results-info" id="resultsInfo"></div>
+
+<div class="sujets-grid" id="sujetsGrid"></div>
+
+<div class="pagination" id="pagination"></div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="logo-icon">📚</span>
+        <span class="logo-text">Sujets<strong>Niger</strong></span>
+        <p>La plateforme de référence pour les examens et concours du Niger.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col"><h4>Navigation</h4><a href="../index.html">Accueil</a><a href="sujets.html">Sujets</a><a href="recherche.html">Recherche</a></div>
+        <div class="footer-col"><h4>Compte</h4><a href="login.html">Connexion</a><a href="register.html">Inscription</a></div>
+        <div class="footer-col"><h4>Contact</h4><a href="mailto:contact@sujetsniger.ne">Email</a></div>
+      </div>
+    </div>
+    <div class="footer-bottom"><p>© 2024 SujetsNiger</p></div>
+  </div>
+</footer>
+
+<script src="../js/db.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/main.js"></script>
+<script>
+const PER_PAGE = 9;
+let currentPage = 1;
+let filteredSujets = [];
+
+function init() {
+  // Populate filter dropdowns
+  const sujets = DB.getSujets();
+  const matieres = [...new Set(sujets.map(s => s.matiere))].sort();
+  const annees = [...new Set(sujets.map(s => s.annee))].sort((a,b) => b-a);
+
+  const matiereSelect = document.getElementById('filterMatiere');
+  matieres.forEach(m => { const o = document.createElement('option'); o.value = m; o.textContent = m; matiereSelect.appendChild(o); });
+
+  const anneeSelect = document.getElementById('filterAnnee');
+  annees.forEach(a => { const o = document.createElement('option'); o.value = a; o.textContent = a; anneeSelect.appendChild(o); });
+
+  // Read URL params
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('type')) document.getElementById('filterType').value = params.get('type');
+  if (params.get('niveau')) document.getElementById('filterNiveau').value = params.get('niveau');
+
+  applyFilters();
+}
+
+function applyFilters() {
+  currentPage = 1;
+  const q = document.getElementById('searchInput').value;
+  const type = document.getElementById('filterType').value;
+  const niveau = document.getElementById('filterNiveau').value;
+  const matiere = document.getElementById('filterMatiere').value;
+  const annee = document.getElementById('filterAnnee').value;
+
+  filteredSujets = DB.searchSujets({ q, type, niveau, matiere, annee });
+  renderPage();
+}
+
+function resetFilters() {
+  document.getElementById('searchInput').value = '';
+  document.getElementById('filterType').value = '';
+  document.getElementById('filterNiveau').value = '';
+  document.getElementById('filterMatiere').value = '';
+  document.getElementById('filterAnnee').value = '';
+  applyFilters();
+}
+
+function renderPage() {
+  const grid = document.getElementById('sujetsGrid');
+  const info = document.getElementById('resultsInfo');
+  const start = (currentPage - 1) * PER_PAGE;
+  const page = filteredSujets.slice(start, start + PER_PAGE);
+
+  info.textContent = `${filteredSujets.length} sujet(s) trouvé(s)`;
+
+  if (filteredSujets.length === 0) {
+    grid.innerHTML = `<div class="empty-state"><div class="big-emoji">🔍</div><h3>Aucun résultat</h3><p>Essayez d'autres filtres ou termes de recherche</p></div>`;
+    document.getElementById('pagination').innerHTML = '';
+    return;
+  }
+
+  grid.innerHTML = page.map(s => renderSujetCard(s)).join('');
+
+  // Pagination
+  const totalPages = Math.ceil(filteredSujets.length / PER_PAGE);
+  const pag = document.getElementById('pagination');
+  if (totalPages <= 1) { pag.innerHTML = ''; return; }
+
+  let html = '';
+  for (let i = 1; i <= totalPages; i++) {
+    html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goPage(${i})">${i}</button>`;
+  }
+  pag.innerHTML = html;
+  pag.style.paddingBottom = '60px';
+}
+
+function goPage(p) {
+  currentPage = p;
+  renderPage();
+  window.scrollTo({ top: 280, behavior: 'smooth' });
+}
+
+document.getElementById('searchInput').addEventListener('keydown', e => { if (e.key === 'Enter') applyFilters(); });
+
+init();
+</script>
+</body>
+</html>

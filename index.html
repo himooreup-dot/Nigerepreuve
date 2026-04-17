@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SujetsNiger — Examens & Concours</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/home.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-icon">📚</span>
+      <span class="logo-text">Sujets<strong>Niger</strong></span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html" class="active">Accueil</a>
+      <a href="pages/sujets.html">Sujets</a>
+      <a href="pages/recherche.html">Recherche</a>
+      <a href="pages/login.html" class="btn-outline">Connexion</a>
+      <a href="pages/register.html" class="btn-primary">S'inscrire</a>
+    </div>
+    <button class="burger" id="burger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+    <div class="grid-pattern"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">🇳🇪 Plateforme Nationale Niger</div>
+    <h1 class="hero-title">
+      Tous vos sujets<br>
+      <span class="gradient-text">d'examens & concours</span><br>
+      en un seul endroit
+    </h1>
+    <p class="hero-sub">
+      Accédez à des centaines de sujets officiels avec leurs corrections — 
+      BAC, BEP, CAP, BEPC, concours de la Fonction Publique et plus encore.
+    </p>
+    <div class="hero-actions">
+      <a href="pages/register.html" class="btn-hero-primary">Commencer gratuitement →</a>
+      <a href="pages/sujets.html" class="btn-hero-ghost">Voir les sujets</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><strong id="cnt-sujets">0</strong><span>Sujets</span></div>
+      <div class="stat-sep"></div>
+      <div class="stat"><strong id="cnt-matieres">0</strong><span>Matières</span></div>
+      <div class="stat-sep"></div>
+      <div class="stat"><strong id="cnt-users">0</strong><span>Utilisateurs</span></div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="card-float card-f1">
+      <span class="card-emoji">📄</span>
+      <div>
+        <div class="card-title">BAC — Mathématiques</div>
+        <div class="card-sub">2023 · Série D</div>
+      </div>
+    </div>
+    <div class="card-float card-f2">
+      <span class="card-emoji">✅</span>
+      <div>
+        <div class="card-title">Correction incluse</div>
+        <div class="card-sub">Officielle & détaillée</div>
+      </div>
+    </div>
+    <div class="card-float card-f3">
+      <span class="card-emoji">🏆</span>
+      <div>
+        <div class="card-title">Concours ENA</div>
+        <div class="card-sub">2022 · Toutes épreuves</div>
+      </div>
+    </div>
+    <div class="hero-phone">
+      <div class="phone-screen">
+        <div class="phone-header">SujetsNiger</div>
+        <div class="phone-item">📄 BAC Physique 2023</div>
+        <div class="phone-item active">✅ BEPC Français 2022</div>
+        <div class="phone-item">🏆 Concours Douanes</div>
+        <div class="phone-item">📄 CAP Maths 2023</div>
+        <div class="phone-item">📄 BEP Sciences 2021</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <div class="container">
+    <div class="section-header">
+      <h2>Pourquoi choisir SujetsNiger ?</h2>
+      <p>La plateforme la plus complète pour préparer vos examens au Niger</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <h3>Recherche intelligente</h3>
+        <p>Trouvez rapidement un sujet par type, niveau, matière ou année grâce à notre moteur de recherche avancé.</p>
+      </div>
+      <div class="feature-card featured">
+        <div class="feature-icon">📥</div>
+        <h3>Téléchargement illimité</h3>
+        <p>Après inscription gratuite, téléchargez autant de sujets et corrections que vous souhaitez.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">✅</div>
+        <h3>Corrections officielles</h3>
+        <p>Chaque sujet est accompagné de sa correction détaillée pour mieux comprendre et progresser.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📚</div>
+        <h3>Tous les niveaux</h3>
+        <p>BEPC, BAC, BEP, CAP, Licence, Master — couvrez tous les cycles scolaires du Niger.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏆</div>
+        <h3>Concours nationaux</h3>
+        <p>ENA, Douanes, Police, Gendarmerie, Armée, Enseignement — tous les concours de la FP.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔄</div>
+        <h3>Mis à jour régulièrement</h3>
+        <p>Notre équipe ajoute continuellement de nouveaux sujets au fur et à mesure des examens.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="categories">
+  <div class="container">
+    <div class="section-header">
+      <h2>Explorer par catégorie</h2>
+    </div>
+    <div class="cat-grid">
+      <a href="pages/sujets.html?type=examen&niveau=BAC" class="cat-card">
+        <div class="cat-bg" style="--c:#f59e0b"></div>
+        <span class="cat-icon">🎓</span>
+        <h3>BAC</h3>
+        <p>Baccalauréat général & technique</p>
+      </a>
+      <a href="pages/sujets.html?type=examen&niveau=BEPC" class="cat-card">
+        <div class="cat-bg" style="--c:#10b981"></div>
+        <span class="cat-icon">📘</span>
+        <h3>BEPC</h3>
+        <p>Brevet d'études du 1er cycle</p>
+      </a>
+      <a href="pages/sujets.html?type=examen&niveau=BEP" class="cat-card">
+        <div class="cat-bg" style="--c:#6366f1"></div>
+        <span class="cat-icon">🔧</span>
+        <h3>BEP / CAP</h3>
+        <p>Enseignement technique & pro</p>
+      </a>
+      <a href="pages/sujets.html?type=concours" class="cat-card">
+        <div class="cat-bg" style="--c:#ef4444"></div>
+        <span class="cat-icon">🏆</span>
+        <h3>Concours FP</h3>
+        <p>Fonction Publique nationale</p>
+      </a>
+      <a href="pages/sujets.html?type=concours&niveau=Université" class="cat-card">
+        <div class="cat-bg" style="--c:#8b5cf6"></div>
+        <span class="cat-icon">🏛️</span>
+        <h3>Université</h3>
+        <p>Licence, Master, Doctorat</p>
+      </a>
+      <a href="pages/sujets.html?type=concours&niveau=Grandes Écoles" class="cat-card">
+        <div class="cat-bg" style="--c:#0ea5e9"></div>
+        <span class="cat-icon">⭐</span>
+        <h3>Grandes Écoles</h3>
+        <p>ENAM, ECPN, ENS, UAM...</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- RECENT -->
+<section class="recent">
+  <div class="container">
+    <div class="section-header">
+      <h2>Sujets récemment ajoutés</h2>
+      <a href="pages/sujets.html" class="see-all">Voir tout →</a>
+    </div>
+    <div class="recent-grid" id="recentGrid">
+      <!-- populated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-box">
+      <h2>Prêt à commencer ?</h2>
+      <p>Inscrivez-vous gratuitement et accédez à toute la bibliothèque de sujets.</p>
+      <a href="pages/register.html" class="btn-hero-primary">Créer un compte gratuit →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="logo-icon">📚</span>
+        <span class="logo-text">Sujets<strong>Niger</strong></span>
+        <p>La plateforme de référence pour les examens et concours du Niger.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <a href="index.html">Accueil</a>
+          <a href="pages/sujets.html">Sujets</a>
+          <a href="pages/recherche.html">Recherche</a>
+        </div>
+        <div class="footer-col">
+          <h4>Compte</h4>
+          <a href="pages/login.html">Connexion</a>
+          <a href="pages/register.html">Inscription</a>
+          <a href="pages/dashboard.html">Mon espace</a>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <a href="mailto:contact@sujetsniger.ne">contact@sujetsniger.ne</a>
+          <a href="#">WhatsApp</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 SujetsNiger · Fait avec ❤️ pour les étudiants nigériens</p>
+    </div>
+  </div>
+</footer>
+
+<script src="js/db.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/main.js"></script>
+<script src="js/home.js"></script>
+</body>
+</html>
