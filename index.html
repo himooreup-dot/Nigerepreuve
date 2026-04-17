@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SujetsNiger — Examens & Concours</title>
-  <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="home.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
@@ -20,10 +20,10 @@
     </a>
     <div class="nav-links" id="navLinks">
       <a href="index.html" class="active">Accueil</a>
-      <a href="pages/sujets.html">Sujets</a>
-      <a href="pages/recherche.html">Recherche</a>
-      <a href="pages/login.html" class="btn-outline">Connexion</a>
-      <a href="pages/register.html" class="btn-primary">S'inscrire</a>
+      <a href="sujets.html">Sujets</a>
+      <a href="recherche.html">Recherche</a>
+      <a href="login.html" class="btn-outline">Connexion</a>
+      <a href="register.html" class="btn-primary">S'inscrire</a>
     </div>
     <button class="burger" id="burger" aria-label="Menu">
       <span></span><span></span><span></span>
@@ -51,8 +51,8 @@
       BAC, BEP, CAP, BEPC, concours de la Fonction Publique et plus encore.
     </p>
     <div class="hero-actions">
-      <a href="pages/register.html" class="btn-hero-primary">Commencer gratuitement →</a>
-      <a href="pages/sujets.html" class="btn-hero-ghost">Voir les sujets</a>
+      <a href="register.html" class="btn-hero-primary">Commencer gratuitement →</a>
+      <a href="sujets.html" class="btn-hero-ghost">Voir les sujets</a>
     </div>
     <div class="hero-stats">
       <div class="stat"><strong id="cnt-sujets">0</strong><span>Sujets</span></div>
@@ -146,37 +146,37 @@
       <h2>Explorer par catégorie</h2>
     </div>
     <div class="cat-grid">
-      <a href="pages/sujets.html?type=examen&niveau=BAC" class="cat-card">
+      <a href="sujets.html?type=examen&niveau=BAC" class="cat-card">
         <div class="cat-bg" style="--c:#f59e0b"></div>
         <span class="cat-icon">🎓</span>
         <h3>BAC</h3>
         <p>Baccalauréat général & technique</p>
       </a>
-      <a href="pages/sujets.html?type=examen&niveau=BEPC" class="cat-card">
+      <a href="sujets.html?type=examen&niveau=BEPC" class="cat-card">
         <div class="cat-bg" style="--c:#10b981"></div>
         <span class="cat-icon">📘</span>
         <h3>BEPC</h3>
         <p>Brevet d'études du 1er cycle</p>
       </a>
-      <a href="pages/sujets.html?type=examen&niveau=BEP" class="cat-card">
+      <a href="sujets.html?type=examen&niveau=BEP" class="cat-card">
         <div class="cat-bg" style="--c:#6366f1"></div>
         <span class="cat-icon">🔧</span>
         <h3>BEP / CAP</h3>
         <p>Enseignement technique & pro</p>
       </a>
-      <a href="pages/sujets.html?type=concours" class="cat-card">
+      <a href="sujets.html?type=concours" class="cat-card">
         <div class="cat-bg" style="--c:#ef4444"></div>
         <span class="cat-icon">🏆</span>
         <h3>Concours FP</h3>
         <p>Fonction Publique nationale</p>
       </a>
-      <a href="pages/sujets.html?type=concours&niveau=Université" class="cat-card">
+      <a href="sujets.html?type=concours&niveau=Université" class="cat-card">
         <div class="cat-bg" style="--c:#8b5cf6"></div>
         <span class="cat-icon">🏛️</span>
         <h3>Université</h3>
         <p>Licence, Master, Doctorat</p>
       </a>
-      <a href="pages/sujets.html?type=concours&niveau=Grandes Écoles" class="cat-card">
+      <a href="sujets.html?type=concours&niveau=Grandes Écoles" class="cat-card">
         <div class="cat-bg" style="--c:#0ea5e9"></div>
         <span class="cat-icon">⭐</span>
         <h3>Grandes Écoles</h3>
@@ -191,7 +191,7 @@
   <div class="container">
     <div class="section-header">
       <h2>Sujets récemment ajoutés</h2>
-      <a href="pages/sujets.html" class="see-all">Voir tout →</a>
+      <a href="sujets.html" class="see-all">Voir tout →</a>
     </div>
     <div class="recent-grid" id="recentGrid">
       <!-- populated by JS -->
@@ -205,7 +205,7 @@
     <div class="cta-box">
       <h2>Prêt à commencer ?</h2>
       <p>Inscrivez-vous gratuitement et accédez à toute la bibliothèque de sujets.</p>
-      <a href="pages/register.html" class="btn-hero-primary">Créer un compte gratuit →</a>
+      <a href="register.html" class="btn-hero-primary">Créer un compte gratuit →</a>
     </div>
   </div>
 </section>
@@ -223,14 +223,14 @@
         <div class="footer-col">
           <h4>Navigation</h4>
           <a href="index.html">Accueil</a>
-          <a href="pages/sujets.html">Sujets</a>
-          <a href="pages/recherche.html">Recherche</a>
+          <a href="sujets.html">Sujets</a>
+          <a href="recherche.html">Recherche</a>
         </div>
         <div class="footer-col">
           <h4>Compte</h4>
-          <a href="pages/login.html">Connexion</a>
-          <a href="pages/register.html">Inscription</a>
-          <a href="pages/dashboard.html">Mon espace</a>
+          <a href="login.html">Connexion</a>
+          <a href="register.html">Inscription</a>
+          <a href="dashboard.html">Mon espace</a>
         </div>
         <div class="footer-col">
           <h4>Contact</h4>
@@ -245,9 +245,9 @@
   </div>
 </footer>
 
-<script src="js/db.js"></script>
-<script src="js/auth.js"></script>
-<script src="js/main.js"></script>
-<script src="js/home.js"></script>
+<script src="db.js"></script>
+<script src="auth.js"></script>
+<script src="main.js"></script>
+<script src="home.js"></script>
 </body>
 </html>
