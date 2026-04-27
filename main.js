@@ -33,7 +33,7 @@ function updateNav() {
     if (loginLink) loginLink.remove();
     if (registerLink) {
       registerLink.textContent = session.prenom || session.nom;
-      registerLink.href = root + (session.role === 'admin' ? 'admin/dashboard.html' : 'pages/dashboard.html');
+      registerLink.href = root + (session.role === 'admin' ? 'dashboard.html' : 'dashboard.html');
     }
     // Add logout
     const logoutBtn = document.createElement('button');
@@ -85,7 +85,7 @@ function renderSujetCard(sujet) {
       ${sujet.correction_url !== '#' || true ? `<button class="btn-download correction" onclick="downloadFile(${sujet.id},'correction')">✅ Correction</button>` : ''}
     `;
   } else {
-    downloadBtns = `<a href="${root}pages/login.html" class="btn-download">🔒 Connexion</a>`;
+    downloadBtns = `<a href="${root}login.html" class="btn-download">🔒 Connexion</a>`;
   }
 
   return `
