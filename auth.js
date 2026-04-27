@@ -45,7 +45,7 @@ const Auth = (() => {
 
   function getRootPath() {
     const path = window.location.pathname;
-    return path.includes('/pages/') || path.includes('/admin/') ? '../' : './';
+    return path.includes('pages') || path.includes('admin') ? '../' : './';
   }
 
   return { isLoggedIn, isAdmin, currentUser, login, register, logout, requireAuth, requireAdmin, getRootPath };
