@@ -29,7 +29,7 @@ const Auth = (() => {
 
   function requireAuth() {
     if (!isLoggedIn()) {
-      window.location.href = getRootPath() + 'pages/login.html?redirect=' + encodeURIComponent(window.location.href);
+      window.location.href = getRootPath() + 'login.html?redirect=' + encodeURIComponent(window.location.href);
       return false;
     }
     return true;
